@@ -3,7 +3,7 @@ package com.gt.logbook.domain.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -58,14 +58,14 @@ public class GeneralLog extends BaseEntity implements Serializable {
     private String note;
 
     @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<WeatherLog> weatherLogs;
+    private List<WeatherLog> weatherLogs;
 
     @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PassageLog> passageLogs;
+    private List<PassageLog> passageLogs;
 
     @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TanksLog> tanksLogs;
+    private List<TanksLog> tanksLogs;
 
     @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CommonLog> commonLogs;
+    private List<CommonLog> commonLogs;
 }

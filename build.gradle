@@ -21,6 +21,9 @@ repositories {
 
 ext {
     set('testcontainersVersion', "1.14.3")
+    set('mapstructVersion', "1.4.1.Final")
+    set('hibernateEhcacheVersion', "5.4.23.Final")
+    set('lombokMapstructBindingVersion', "0.1.0")
 }
 
 dependencies {
@@ -31,20 +34,20 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.session:spring-session-core'
     implementation 'org.flywaydb:flyway-core'
-    implementation group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.23.Final'
-    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    implementation "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
+    compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
-
 }
 
 dependencyManagement {

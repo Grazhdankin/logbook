@@ -5,7 +5,6 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,7 +25,7 @@ public class TanksLog extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -832021534136259409L;
 
     @EqualsAndHashCode.Include
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "general_log_id", nullable = false)
     private GeneralLog generalLog;
 
@@ -35,7 +34,7 @@ public class TanksLog extends BaseEntity implements Serializable {
     private LocalTime time;
 
     @EqualsAndHashCode.Include
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "tank_id", nullable = false)
     private Tank tank;
 

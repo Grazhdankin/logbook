@@ -5,7 +5,6 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,7 +25,7 @@ public class PassageLog extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -198513277173007649L;
 
     @EqualsAndHashCode.Include
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "general_log_id", nullable = false)
     private GeneralLog generalLog;
 
@@ -37,11 +36,11 @@ public class PassageLog extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private Float passage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "officer_of_the_watch_id", nullable = false)
     private User officerOfTheWatch;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "seamen_of_the_watch_id", nullable = false)
     private User seamenOfTheWatch;
 }

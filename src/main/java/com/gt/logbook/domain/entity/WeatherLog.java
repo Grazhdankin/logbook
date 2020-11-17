@@ -5,7 +5,6 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,7 +25,7 @@ public class WeatherLog extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 5372740146212121289L;
 
     @EqualsAndHashCode.Include
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "general_log_id", nullable = false)
     private GeneralLog generalLog;
 
