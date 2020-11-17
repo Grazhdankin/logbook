@@ -22,6 +22,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/logbook
     hikari:
       maximum-pool-size: 5
+  cache:
+    type: redis
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
@@ -31,7 +33,7 @@ spring:
           use_query_cache: true
           region_prefix: hibernate
           redisson.config: redisson.yaml
-          region.factory_class: org.redisson.hibernate.RedissonRegionFactory
+          region.factory_class: org.hibernate.cache.ehcache.internal.EhcacheRegionFactory
         temp:
           use_jdbc_metadata_defaults: false
 
