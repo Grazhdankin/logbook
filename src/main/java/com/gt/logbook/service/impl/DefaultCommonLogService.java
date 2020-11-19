@@ -32,6 +32,13 @@ public class DefaultCommonLogService implements CommonLogService {
         return repository.findById(id);
     }
 
+    @Transactional
+    @Override
+    public List<CommonLog> findByGeneralLogId(Long id) {
+        return repository.findByGeneralLog_Id(id);
+    }
+
+    @Transactional
     @Override
     public List<CommonLog> findAllRevisions(Long id) {
         return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());

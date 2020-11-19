@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.gt.logbook.domain.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> , RevisionRepository<User, Long, Integer> {
+public interface UserRepository extends JpaRepository<User, Long>, RevisionRepository<User, Long, Integer> {
 }

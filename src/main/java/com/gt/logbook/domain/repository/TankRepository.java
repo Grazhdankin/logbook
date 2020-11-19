@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.gt.logbook.domain.entity.Tank;
 
 @Repository
-public interface TankRepository extends JpaRepository<Tank, Long> , RevisionRepository<Tank, Long, Integer> {
+public interface TankRepository extends JpaRepository<Tank, Long>, RevisionRepository<Tank, Long, Integer> {
 }

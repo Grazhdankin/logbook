@@ -11,11 +11,12 @@ import com.gt.logbook.web.dto.TanksLogDto;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {GeneralLogDtoMapper.class, TankDtoMapper.class})
 public interface TanksLogDtoMapper {
 
-    @Mapping(source="generalLog.id", target="generalLogId")
+    @Mapping(source = "generalLog.id", target = "generalLogId")
+    @Mapping(source = "tank.id", target = "tankId")
     TanksLogDto toDto(TanksLog entity);
 
     List<TanksLogDto> toDto(List<TanksLog> entityList);
 
-    @Mapping(source = "generalLogId", target = "generalLog")
+    @Mapping(ignore = true, target = "updatedAt")
     TanksLog toEntity(TanksLogDto dto);
 }

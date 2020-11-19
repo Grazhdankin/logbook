@@ -11,6 +11,8 @@ public interface PassageLogService {
 
     Optional<PassageLog> findOne(Long id);
 
+    List<PassageLog> findByGeneralLogId(Long id);
+
     List<PassageLog> findAllRevisions(Long id);
 
     PassageLog save(PassageLog entity);

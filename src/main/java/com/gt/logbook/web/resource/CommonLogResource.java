@@ -40,6 +40,11 @@ public class CommonLogResource {
         return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
     }
 
+    @GetMapping(path = "/general-logs/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<CommonLogDto> findByGeneralLogId(@PathVariable Long id) {
+        return Flux.defer(() -> Flux.fromIterable(endpoint.findByGeneralLogId(id)));
+    }
+
     @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<CommonLogDto> findAllRevisions(@PathVariable Long id) {
         return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));

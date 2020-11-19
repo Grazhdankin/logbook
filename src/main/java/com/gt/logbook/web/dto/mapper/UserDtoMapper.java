@@ -3,6 +3,7 @@ package com.gt.logbook.web.dto.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import com.gt.logbook.domain.entity.User;
 import com.gt.logbook.web.dto.UserDto;
@@ -14,16 +15,6 @@ public interface UserDtoMapper {
 
     List<UserDto> toDto(List<User> entityList);
 
+    @Mapping(ignore = true, target = "updatedAt")
     User toEntity(UserDto dto);
-
-    default User fromId(final Long id) {
-        if (id == null) {
-            return null;
-        }
-
-        final User user = new User();
-        user.setId(id);
-
-        return user;
-    }
 }

@@ -33,6 +33,12 @@ public class DefaultWeatherLogService implements WeatherLogService {
     }
 
     @Override
+    public List<WeatherLog> findByGeneralLogId(Long id) {
+        return repository.findByGeneralLog_Id(id);
+    }
+
+    @Transactional
+    @Override
     public List<WeatherLog> findAllRevisions(Long id) {
         return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());
     }

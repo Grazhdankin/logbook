@@ -3,15 +3,17 @@ package com.gt.logbook.domain.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,15 +61,19 @@ public class GeneralLog extends BaseEntity implements Serializable {
     @Column
     private String note;
 
-    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WeatherLog> weatherLogs;
+    @NotAudited
+    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<WeatherLog> weatherLogs;
 
-    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PassageLog> passageLogs;
+    @NotAudited
+    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<PassageLog> passageLogs;
 
-    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TanksLog> tanksLogs;
+    @NotAudited
+    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<TanksLog> tanksLogs;
 
-    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommonLog> commonLogs;
+    @NotAudited
+    @OneToMany(mappedBy = "generalLog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CommonLog> commonLogs;
 }

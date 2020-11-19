@@ -17,20 +17,10 @@ public interface GeneralLogDtoMapper {
 
     List<GeneralLogDto> toDto(List<GeneralLog> entityList);
 
+    @Mapping(ignore = true, target = "updatedAt")
     @Mapping(ignore = true, target = "weatherLogs")
     @Mapping(ignore = true, target = "passageLogs")
     @Mapping(ignore = true, target = "tanksLogs")
     @Mapping(ignore = true, target = "commonLogs")
     GeneralLog toEntity(GeneralLogDto dto);
-
-    default GeneralLog fromId(final Long id) {
-        if (id == null) {
-            return null;
-        }
-
-        final GeneralLog generalLog = new GeneralLog();
-        generalLog.setId(id);
-
-        return generalLog;
-    }
 }

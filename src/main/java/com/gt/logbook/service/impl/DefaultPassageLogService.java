@@ -32,6 +32,13 @@ public class DefaultPassageLogService implements PassageLogService {
         return repository.findById(id);
     }
 
+    @Transactional
+    @Override
+    public List<PassageLog> findByGeneralLogId(Long id) {
+        return repository.findByGeneralLog_Id(id);
+    }
+
+    @Transactional
     @Override
     public List<PassageLog> findAllRevisions(Long id) {
         return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());

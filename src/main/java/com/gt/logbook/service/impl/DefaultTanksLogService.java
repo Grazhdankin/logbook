@@ -32,6 +32,13 @@ public class DefaultTanksLogService implements TanksLogService {
         return repository.findById(id);
     }
 
+    @Transactional
+    @Override
+    public List<TanksLog> findByGeneralLogId(Long id) {
+        return repository.findByGeneralLog_Id(id);
+    }
+
+    @Transactional
     @Override
     public List<TanksLog> findAllRevisions(Long id) {
         return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());

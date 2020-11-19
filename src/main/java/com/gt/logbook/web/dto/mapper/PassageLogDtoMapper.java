@@ -11,15 +11,13 @@ import com.gt.logbook.web.dto.PassageLogDto;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {GeneralLogDtoMapper.class, UserDtoMapper.class})
 public interface PassageLogDtoMapper {
 
-    @Mapping(source="generalLog.id", target="generalLogId")
-    @Mapping(source="officerOfTheWatch.id", target="officerOfTheWatchId")
-    @Mapping(source="seamenOfTheWatch.id", target="seamenOfTheWatchId")
+    @Mapping(source = "generalLog.id", target = "generalLogId")
+    @Mapping(source = "officerOfTheWatch.id", target = "officerOfTheWatchId")
+    @Mapping(source = "seamenOfTheWatch.id", target = "seamenOfTheWatchId")
     PassageLogDto toDto(PassageLog entity);
 
     List<PassageLogDto> toDto(List<PassageLog> entityList);
 
-    @Mapping(source = "generalLogId", target = "generalLog")
-    @Mapping(source = "officerOfTheWatchId", target = "officerOfTheWatch")
-    @Mapping(source = "seamenOfTheWatchId", target = "seamenOfTheWatch")
+    @Mapping(ignore = true, target = "updatedAt")
     PassageLog toEntity(PassageLogDto dto);
 }

@@ -11,6 +11,8 @@ public interface WeatherLogService {
 
     Optional<WeatherLog> findOne(Long id);
 
+    List<WeatherLog> findByGeneralLogId(Long id);
+
     List<WeatherLog> findAllRevisions(Long id);
 
     WeatherLog save(WeatherLog entity);

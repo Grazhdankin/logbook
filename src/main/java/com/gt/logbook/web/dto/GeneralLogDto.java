@@ -1,13 +1,16 @@
 package com.gt.logbook.web.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
@@ -15,6 +18,7 @@ import lombok.Value;
 
 @Value
 @Builder(toBuilder = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = GeneralLogDto.GeneralLogDtoBuilder.class)
 public class GeneralLogDto {
 
@@ -26,11 +30,18 @@ public class GeneralLogDto {
     @NotNull(groups = Group.Update.class, message = "version: must not be null")
     Short version;
 
+    @Null(message = "updatedAt: must not present")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    LocalDateTime updatedAt;
+
     @NotNull(message = "date: must not be null")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate date;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     LocalTime lightsOnTime;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     LocalTime lightsOffTime;
 
     Float dieselFuelConsumption;
@@ -49,16 +60,16 @@ public class GeneralLogDto {
     String note;
 
     @Null(message = "weatherLogs: must not present")
-    List<WeatherLogDto> weatherLogs;
+    Set<WeatherLogDto> weatherLogs;
 
     @Null(message = "passageLogs: must not present")
-    List<PassageLogDto> passageLogs;
+    Set<PassageLogDto> passageLogs;
 
     @Null(message = "tanksLogs: must not present")
-    List<TanksLogDto> tanksLogs;
+    Set<TanksLogDto> tanksLogs;
 
     @Null(message = "commonLogs: must not present")
-    List<CommonLogDto> commonLogs;
+    Set<CommonLogDto> commonLogs;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class GeneralLogDtoBuilder {

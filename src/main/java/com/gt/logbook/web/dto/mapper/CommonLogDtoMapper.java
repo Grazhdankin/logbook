@@ -11,11 +11,11 @@ import com.gt.logbook.web.dto.CommonLogDto;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {GeneralLogDtoMapper.class})
 public interface CommonLogDtoMapper {
 
-    @Mapping(source="generalLog.id", target="generalLogId")
+    @Mapping(source = "generalLog.id", target = "generalLogId")
     CommonLogDto toDto(CommonLog entity);
 
     List<CommonLogDto> toDto(List<CommonLog> entityList);
 
-    @Mapping(source = "generalLogId", target = "generalLog")
+    @Mapping(ignore = true, target = "updatedAt")
     CommonLog toEntity(CommonLogDto dto);
 }

@@ -40,6 +40,11 @@ public class TanksLogResource {
         return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
     }
 
+    @GetMapping(path = "/general-logs/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<TanksLogDto> findByGeneralLogId(@PathVariable Long id) {
+        return Flux.defer(() -> Flux.fromIterable(endpoint.findByGeneralLogId(id)));
+    }
+
     @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<TanksLogDto> findAllRevisions(@PathVariable Long id) {
         return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));

@@ -11,6 +11,8 @@ public interface TanksLogService {
 
     Optional<TanksLog> findOne(Long id);
 
+    List<TanksLog> findByGeneralLogId(Long id);
+
     List<TanksLog> findAllRevisions(Long id);
 
     TanksLog save(TanksLog entity);

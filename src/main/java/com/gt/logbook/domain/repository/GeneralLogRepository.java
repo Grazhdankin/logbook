@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.gt.logbook.domain.entity.GeneralLog;
 
 @Repository
-public interface GeneralLogRepository extends JpaRepository<GeneralLog, Long> , RevisionRepository<GeneralLog, Long, Integer> {
+public interface GeneralLogRepository extends JpaRepository<GeneralLog, Long>, RevisionRepository<GeneralLog, Long, Integer> {
 }

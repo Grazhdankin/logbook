@@ -40,6 +40,11 @@ public class PassageLogResource {
         return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
     }
 
+    @GetMapping(path = "/general-logs/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<PassageLogDto> findByGeneralLogId(@PathVariable Long id) {
+        return Flux.defer(() -> Flux.fromIterable(endpoint.findByGeneralLogId(id)));
+    }
+
     @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<PassageLogDto> findAllRevisions(@PathVariable Long id) {
         return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));
