@@ -11,6 +11,8 @@ public interface UserService {
 
     Optional<User> findOne(Long id);
 
+    List<User> findAllRevisions(Long id);
+
     User save(User entity);
 
     void delete(Long id);

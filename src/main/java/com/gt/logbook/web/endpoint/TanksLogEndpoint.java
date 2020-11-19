@@ -11,6 +11,8 @@ public interface TanksLogEndpoint {
 
     Optional<TanksLogDto> findOne(Long id);
 
+    List<TanksLogDto> findAllRevisions(Long id);
+
     TanksLogDto save(TanksLogDto dto);
 
     void delete(Long id);

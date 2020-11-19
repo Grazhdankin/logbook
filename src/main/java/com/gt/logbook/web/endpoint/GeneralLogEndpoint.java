@@ -11,6 +11,8 @@ public interface GeneralLogEndpoint {
 
     Optional<GeneralLogDto> findOne(Long id);
 
+    List<GeneralLogDto> findAllRevisions(Long id);
+
     GeneralLogDto save(GeneralLogDto dto);
 
     void delete(Long id);

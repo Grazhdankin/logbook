@@ -2,7 +2,9 @@ package com.gt.logbook.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.data.history.Revision;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.domain.entity.CommonLog;
@@ -28,6 +30,11 @@ public class DefaultCommonLogService implements CommonLogService {
     @Override
     public Optional<CommonLog> findOne(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<CommonLog> findAllRevisions(Long id) {
+        return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());
     }
 
     @Transactional

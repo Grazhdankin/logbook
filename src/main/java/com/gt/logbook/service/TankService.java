@@ -11,6 +11,8 @@ public interface TankService {
 
     Optional<Tank> findOne(Long id);
 
+    List<Tank> findAllRevisions(Long id);
+
     Tank save(Tank entity);
 
     void delete(Long id);

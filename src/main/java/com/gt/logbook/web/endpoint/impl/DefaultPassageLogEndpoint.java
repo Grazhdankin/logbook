@@ -31,6 +31,11 @@ public class DefaultPassageLogEndpoint implements PassageLogEndpoint {
     }
 
     @Override
+    public List<PassageLogDto> findAllRevisions(Long id) {
+        return mapper.toDto(service.findAllRevisions(id));
+    }
+
+    @Override
     public PassageLogDto save(PassageLogDto dto) {
         return mapper.toDto(service.save(mapper.toEntity(dto)));
     }

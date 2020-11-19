@@ -31,6 +31,11 @@ public class DefaultUserEndpoint implements UserEndpoint {
     }
 
     @Override
+    public List<UserDto> findAllRevisions(Long id) {
+        return mapper.toDto(service.findAllRevisions(id));
+    }
+
+    @Override
     public UserDto save(UserDto dto) {
         return mapper.toDto(service.save(mapper.toEntity(dto)));
     }

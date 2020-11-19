@@ -11,6 +11,8 @@ public interface PassageLogEndpoint {
 
     Optional<PassageLogDto> findOne(Long id);
 
+    List<PassageLogDto> findAllRevisions(Long id);
+
     PassageLogDto save(PassageLogDto dto);
 
     void delete(Long id);

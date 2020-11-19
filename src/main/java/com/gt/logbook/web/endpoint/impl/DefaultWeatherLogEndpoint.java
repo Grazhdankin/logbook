@@ -31,6 +31,11 @@ public class DefaultWeatherLogEndpoint implements WeatherLogEndpoint {
     }
 
     @Override
+    public List<WeatherLogDto> findAllRevisions(Long id) {
+        return mapper.toDto(service.findAllRevisions(id));
+    }
+
+    @Override
     public WeatherLogDto save(WeatherLogDto dto) {
         return mapper.toDto(service.save(mapper.toEntity(dto)));
     }

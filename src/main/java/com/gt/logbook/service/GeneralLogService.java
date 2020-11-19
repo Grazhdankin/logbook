@@ -11,6 +11,8 @@ public interface GeneralLogService {
 
     Optional<GeneralLog> findOne(Long id);
 
+    List<GeneralLog> findAllRevisions(Long id);
+
     GeneralLog save(GeneralLog entity);
 
     void delete(Long id);

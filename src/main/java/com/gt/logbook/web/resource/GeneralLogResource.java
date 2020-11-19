@@ -40,6 +40,11 @@ public class GeneralLogResource {
         return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
     }
 
+    @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<GeneralLogDto> findAllRevisions(@PathVariable Long id) {
+        return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<GeneralLogDto> save(@Validated(Group.Create.class) @RequestBody GeneralLogDto dto) {
         return Mono.fromCallable(() -> endpoint.save(dto));

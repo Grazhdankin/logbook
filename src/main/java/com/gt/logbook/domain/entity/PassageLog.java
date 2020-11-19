@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "passage_logs")
 public class PassageLog extends BaseEntity implements Serializable {
 

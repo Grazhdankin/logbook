@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.gt.logbook.web.dto.Group;
 import com.gt.logbook.web.dto.CommonLogDto;
+import com.gt.logbook.web.dto.Group;
 import com.gt.logbook.web.endpoint.CommonLogEndpoint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -38,6 +38,11 @@ public class CommonLogResource {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<CommonLogDto>> findOne(@PathVariable Long id) {
         return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
+    }
+
+    @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<CommonLogDto> findAllRevisions(@PathVariable Long id) {
+        return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

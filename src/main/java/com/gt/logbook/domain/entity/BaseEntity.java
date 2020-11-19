@@ -11,9 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import org.springframework.data.annotation.CreatedBy;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Getter;
@@ -23,6 +22,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@Audited
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity implements Serializable {
@@ -36,7 +36,7 @@ public abstract class BaseEntity implements Serializable {
 
     @Version
     @Column
-    private short version;
+    private Short version;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -46,11 +46,11 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @CreatedBy
-    @Column(name = "created_by", nullable = false, updatable = false)
-    private Long createdBy;
-
-    @LastModifiedBy
-    @Column(name = "updated_by", nullable = false)
-    private Long updatedBy;
+//    @CreatedBy
+//    @Column(name = "created_by", nullable = false, updatable = false)
+//    private Long createdBy;
+//
+//    @LastModifiedBy
+//    @Column(name = "updated_by", nullable = false)
+//    private Long updatedBy;
 }

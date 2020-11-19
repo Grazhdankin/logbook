@@ -2,7 +2,9 @@ package com.gt.logbook.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.data.history.Revision;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.domain.entity.Tank;
@@ -28,6 +30,11 @@ public class DefaultTankService implements TankService {
     @Override
     public Optional<Tank> findOne(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<Tank> findAllRevisions(Long id) {
+        return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());
     }
 
     @Transactional

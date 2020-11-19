@@ -31,6 +31,11 @@ public class DefaultCommonLogEndpoint implements CommonLogEndpoint {
     }
 
     @Override
+    public List<CommonLogDto> findAllRevisions(Long id) {
+        return mapper.toDto(service.findAllRevisions(id));
+    }
+
+    @Override
     public CommonLogDto save(CommonLogDto dto) {
         return mapper.toDto(service.save(mapper.toEntity(dto)));
     }

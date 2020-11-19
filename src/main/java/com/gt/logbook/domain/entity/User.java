@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "users")
 public class User extends BaseEntity implements Serializable {
 

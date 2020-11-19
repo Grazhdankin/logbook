@@ -31,6 +31,11 @@ public class DefaultTanksLogEndpoint implements TanksLogEndpoint {
     }
 
     @Override
+    public List<TanksLogDto> findAllRevisions(Long id) {
+        return mapper.toDto(service.findAllRevisions(id));
+    }
+
+    @Override
     public TanksLogDto save(TanksLogDto dto) {
         return mapper.toDto(service.save(mapper.toEntity(dto)));
     }

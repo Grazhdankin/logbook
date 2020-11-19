@@ -11,6 +11,8 @@ public interface WeatherLogEndpoint {
 
     Optional<WeatherLogDto> findOne(Long id);
 
+    List<WeatherLogDto> findAllRevisions(Long id);
+
     WeatherLogDto save(WeatherLogDto dto);
 
     void delete(Long id);

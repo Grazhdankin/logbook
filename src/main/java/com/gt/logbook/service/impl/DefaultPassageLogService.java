@@ -2,7 +2,9 @@ package com.gt.logbook.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.data.history.Revision;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.domain.entity.PassageLog;
@@ -28,6 +30,11 @@ public class DefaultPassageLogService implements PassageLogService {
     @Override
     public Optional<PassageLog> findOne(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<PassageLog> findAllRevisions(Long id) {
+        return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());
     }
 
     @Transactional
