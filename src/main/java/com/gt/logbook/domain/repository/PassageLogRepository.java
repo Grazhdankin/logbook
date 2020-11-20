@@ -1,14 +1,13 @@
 package com.gt.logbook.domain.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 import com.gt.logbook.domain.entity.PassageLog;
+import reactor.core.publisher.Flux;
 
 @Repository
-public interface PassageLogRepository extends JpaRepository<PassageLog, Long>, RevisionRepository<PassageLog, Long, Integer> {
+public interface PassageLogRepository extends R2dbcRepository<PassageLog, Long>, RevisionRepository<PassageLog, Long, Integer> {
 
-    List<PassageLog> findByGeneralLog_Id(Long id);
+    Flux<PassageLog> findByGeneralLog_Id(Long id);
 }

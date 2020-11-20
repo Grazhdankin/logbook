@@ -15,29 +15,33 @@ spring:
       FAIL_ON_UNKNOWN_PROPERTIES: false
     mapper:
       default-view-inclusion: true
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/logbook
-    hikari:
-      maximum-pool-size: 5
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: postgres
+#    url: r2dbc:postgresql://localhost:5432/logbook
+#    hikari:
+#      maximum-pool-size: 5
   cache:
     type: ehcache
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    properties:
-      hibernate:
-        cache:
-          use_second_level_cache: true
-          use_query_cache: true
-          region.factory_class: org.hibernate.cache.ehcache.internal.EhcacheRegionFactory
-          ehcache:
-            missing_cache_strategy: create
-        temp:
-          use_jdbc_metadata_defaults: false
-        hbm2ddl:
-          auto: update
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/logbook
+    username: postgres
+    password: postgres
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+#    properties:
+#      hibernate:
+#        cache:
+#          use_second_level_cache: true
+#          use_query_cache: true
+#          region.factory_class: org.hibernate.cache.ehcache.internal.EhcacheRegionFactory
+#          ehcache:
+#            missing_cache_strategy: create
+#        temp:
+#          use_jdbc_metadata_defaults: false
+#        hbm2ddl:
+#          auto: update
 
 management:
   health:
@@ -63,3 +67,13 @@ management:
     export:
       prometheus:
         enabled: true
+
+security:
+  password:
+    encoder:
+      secret: mysecret
+      iteration: 33
+      keylength: 256
+  jjwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
+    expiration: 28800

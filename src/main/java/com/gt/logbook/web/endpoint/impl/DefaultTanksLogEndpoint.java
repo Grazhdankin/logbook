@@ -1,15 +1,15 @@
 package com.gt.logbook.web.endpoint.impl;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.service.GeneralLogService;
 import com.gt.logbook.service.TankService;
 import com.gt.logbook.service.TanksLogService;
 import com.gt.logbook.web.dto.TanksLogDto;
 import com.gt.logbook.web.dto.mapper.TanksLogDtoMapper;
 import com.gt.logbook.web.endpoint.TanksLogEndpoint;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class DefaultTanksLogEndpoint implements TanksLogEndpoint {
@@ -30,36 +30,39 @@ public class DefaultTanksLogEndpoint implements TanksLogEndpoint {
     }
 
     @Override
-    public List<TanksLogDto> findAll() {
-        return mapper.toDto(service.findAll());
+    public Flux<TanksLogDto> findAll() {
+        return service.findAll().map(mapper::toDto);
     }
 
     @Override
-    public Optional<TanksLogDto> findOne(Long id) {
+    public Mono<TanksLogDto> findOne(Long id) {
         return service.findOne(id).map(mapper::toDto);
     }
 
     @Override
-    public List<TanksLogDto> findByGeneralLogId(Long id) {
-        return mapper.toDto(service.findByGeneralLogId(id));
+    public Flux<TanksLogDto> findByGeneralLogId(Long id) {
+        return service.findByGeneralLogId(id).map(mapper::toDto);
     }
 
     @Override
-    public List<TanksLogDto> findAllRevisions(Long id) {
-        return mapper.toDto(service.findAllRevisions(id));
+    public Flux<TanksLogDto> findAllRevisions(Long id) {
+        return service.findAllRevisions(id).map(mapper::toDto);
+    }
+
+    @Transactional
+    @Override
+    public Mono<TanksLogDto> save(TanksLogDto dto) {
+        return generalLogService.findOne(dto.getGeneralLogId())
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid generalLogId '" + dto.getGeneralLogId() + "'!")))
+                .zipWith(tankService.findOne(dto.getTankId())
+                        .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid generalLogId '" + dto.getGeneralLogId() + "'!"))),
+                        (generalLog, tank) -> mapper.toEntity(dto).setGeneralLog(generalLog).setTank(tank))
+                .flatMap(service::save)
+                .map(mapper::toDto);
     }
 
     @Override
-    public TanksLogDto save(TanksLogDto dto) {
-        return mapper.toDto(service.save(mapper.toEntity(dto)
-                .setGeneralLog(generalLogService.findOne(dto.getGeneralLogId())
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid generalLogId '" + dto.getGeneralLogId() + "'!")))
-                .setTank(tankService.findOne(dto.getTankId())
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid tankId '" + dto.getTankId() + "'!")))));
-    }
-
-    @Override
-    public void delete(Long id) {
-        service.delete(id);
+    public Mono<Void> delete(Long id) {
+        return service.delete(id);
     }
 }

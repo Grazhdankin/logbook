@@ -1,14 +1,13 @@
 package com.gt.logbook.domain.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 import com.gt.logbook.domain.entity.WeatherLog;
+import reactor.core.publisher.Flux;
 
 @Repository
-public interface WeatherLogRepository extends JpaRepository<WeatherLog, Long>, RevisionRepository<WeatherLog, Long, Integer> {
+public interface WeatherLogRepository extends R2dbcRepository<WeatherLog, Long>, RevisionRepository<WeatherLog, Long, Integer> {
 
-    List<WeatherLog> findByGeneralLog_Id(Long id);
+    Flux<WeatherLog> findByGeneralLog_Id(Long id);
 }

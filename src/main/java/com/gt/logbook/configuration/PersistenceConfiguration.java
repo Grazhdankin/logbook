@@ -1,35 +1,33 @@
 package com.gt.logbook.configuration;
 
-import java.util.Optional;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.domain.ReactiveAuditorAware;
 import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import com.gt.logbook.domain.entity.User;
 
-@Profile("!test")
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.gt.logbook.domain.repository", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
+@EnableR2dbcRepositories(basePackages = "com.gt.logbook.domain.repository", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 public class PersistenceConfiguration {
 
-    @Profile("!test")
     @Configuration
-    @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
-    public static class JpaAuditingConfiguration {
+    @EnableR2dbcAuditing(auditorAwareRef = "auditorProvider")
+    public static class R2dbcAuditingConfiguration {
 
         @Bean
-        public AuditorAware<String> auditorProvider() {
-
-        /*
-          if you are using spring security, you can get the currently logged username with following code segment.
-          SecurityContextHolder.getContext().getAuthentication().getName()
-         */
-            return () -> Optional.of("system");
+        ReactiveAuditorAware<String> auditorAware() {
+            return () -> ReactiveSecurityContextHolder.getContext()
+                    .map(SecurityContext::getAuthentication)
+                    .filter(Authentication::isAuthenticated)
+                    .map(Authentication::getPrincipal)
+                    .map(object -> ((User) object).getUsername());
         }
     }
 }

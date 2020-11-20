@@ -1,21 +1,20 @@
 package com.gt.logbook.web.endpoint;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.web.dto.WeatherLogDto;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface WeatherLogEndpoint {
 
-    List<WeatherLogDto> findAll();
+    Flux<WeatherLogDto> findAll();
 
-    Optional<WeatherLogDto> findOne(Long id);
+    Mono<WeatherLogDto> findOne(Long id);
 
-    List<WeatherLogDto> findByGeneralLogId(Long id);
+    Flux<WeatherLogDto> findByGeneralLogId(Long id);
 
-    List<WeatherLogDto> findAllRevisions(Long id);
+    Flux<WeatherLogDto> findAllRevisions(Long id);
 
-    WeatherLogDto save(WeatherLogDto dto);
+    Mono<WeatherLogDto> save(WeatherLogDto dto);
 
-    void delete(Long id);
+    Mono<Void> delete(Long id);
 }

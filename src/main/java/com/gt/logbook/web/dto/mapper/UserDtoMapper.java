@@ -11,6 +11,7 @@ import com.gt.logbook.web.dto.UserDto;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserDtoMapper {
 
+    @Mapping(ignore = true, target = "password")
     UserDto toDto(User entity);
 
     List<UserDto> toDto(List<User> entityList);

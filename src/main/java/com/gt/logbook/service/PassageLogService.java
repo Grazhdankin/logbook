@@ -1,21 +1,20 @@
 package com.gt.logbook.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.domain.entity.PassageLog;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface PassageLogService {
 
-    List<PassageLog> findAll();
+    Flux<PassageLog> findAll();
 
-    Optional<PassageLog> findOne(Long id);
+    Mono<PassageLog> findOne(Long id);
 
-    List<PassageLog> findByGeneralLogId(Long id);
+    Flux<PassageLog> findByGeneralLogId(Long id);
 
-    List<PassageLog> findAllRevisions(Long id);
+    Flux<PassageLog> findAllRevisions(Long id);
 
-    PassageLog save(PassageLog entity);
+    Mono<PassageLog> save(PassageLog entity);
 
-    void delete(Long id);
+    Mono<Void> delete(Long id);
 }

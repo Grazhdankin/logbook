@@ -1,8 +1,5 @@
 package com.gt.logbook.web.endpoint.impl;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.service.GeneralLogService;
@@ -11,6 +8,8 @@ import com.gt.logbook.service.UserService;
 import com.gt.logbook.web.dto.PassageLogDto;
 import com.gt.logbook.web.dto.mapper.PassageLogDtoMapper;
 import com.gt.logbook.web.endpoint.PassageLogEndpoint;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class DefaultPassageLogEndpoint implements PassageLogEndpoint {
@@ -31,39 +30,42 @@ public class DefaultPassageLogEndpoint implements PassageLogEndpoint {
     }
 
     @Override
-    public List<PassageLogDto> findAll() {
-        return mapper.toDto(service.findAll());
+    public Flux<PassageLogDto> findAll() {
+        return service.findAll().map(mapper::toDto);
     }
 
     @Override
-    public Optional<PassageLogDto> findOne(Long id) {
+    public Mono<PassageLogDto> findOne(Long id) {
         return service.findOne(id).map(mapper::toDto);
     }
 
     @Override
-    public List<PassageLogDto> findByGeneralLogId(Long id) {
-        return mapper.toDto(service.findByGeneralLogId(id));
+    public Flux<PassageLogDto> findByGeneralLogId(Long id) {
+        return service.findByGeneralLogId(id).map(mapper::toDto);
     }
 
     @Override
-    public List<PassageLogDto> findAllRevisions(Long id) {
-        return mapper.toDto(service.findAllRevisions(id));
+    public Flux<PassageLogDto> findAllRevisions(Long id) {
+        return service.findAllRevisions(id).map(mapper::toDto);
     }
 
     @Transactional
     @Override
-    public PassageLogDto save(PassageLogDto dto) {
-        return mapper.toDto(service.save(mapper.toEntity(dto)
-                .setGeneralLog(generalLogService.findOne(dto.getGeneralLogId())
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid generalLogId '" + dto.getGeneralLogId() + "'!")))
-                .setOfficerOfTheWatch(userService.findOne(dto.getOfficerOfTheWatchId())
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid officerOfTheWatchId '" + dto.getOfficerOfTheWatchId() + "'!")))
-                .setSeamenOfTheWatch(userService.findOne(dto.getSeamenOfTheWatchId())
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid seamenOfTheWatchId '" + dto.getSeamenOfTheWatchId() + "'!")))));
+    public Mono<PassageLogDto> save(PassageLogDto dto) {
+        return Mono.zip(
+                generalLogService.findOne(dto.getGeneralLogId())
+                        .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid generalLogId '" + dto.getGeneralLogId() + "'!"))),
+                userService.findOne(dto.getOfficerOfTheWatchId())
+                        .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid officerOfTheWatchId '" + dto.getOfficerOfTheWatchId() + "'!"))),
+                userService.findOne(dto.getSeamenOfTheWatchId())
+                        .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid seamenOfTheWatchId '" + dto.getSeamenOfTheWatchId() + "'!"))))
+                .map(tuple -> mapper.toEntity(dto).setGeneralLog(tuple.getT1()).setOfficerOfTheWatch(tuple.getT2()).setSeamenOfTheWatch(tuple.getT3()))
+                .flatMap(service::save)
+                .map(mapper::toDto);
     }
 
     @Override
-    public void delete(Long id) {
-        service.delete(id);
+    public Mono<Void> delete(Long id) {
+        return service.delete(id);
     }
 }

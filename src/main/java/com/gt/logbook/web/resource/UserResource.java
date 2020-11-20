@@ -32,31 +32,32 @@ public class UserResource {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<UserDto> findAll() {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findAll()));
+        return endpoint.findAll();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<UserDto>> findOne(@PathVariable Long id) {
-        return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
+        return endpoint.findOne(id).map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<UserDto> findAllRevisions(@PathVariable Long id) {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));
+        return endpoint.findAllRevisions(id);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<UserDto> save(@Validated(Group.Create.class) @RequestBody UserDto dto) {
-        return Mono.fromCallable(() -> endpoint.save(dto));
+        return endpoint.save(dto);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<UserDto> update(@Validated(Group.Update.class) @RequestBody UserDto dto) {
-        return Mono.fromCallable(() -> endpoint.save(dto));
+        return endpoint.save(dto);
     }
 
     @DeleteMapping(value = "/{id}")
     public Mono<Void> delete(@PathVariable Long id) {
-        return Mono.fromRunnable(() -> endpoint.delete(id));
+        return endpoint.delete(id);
     }
 }

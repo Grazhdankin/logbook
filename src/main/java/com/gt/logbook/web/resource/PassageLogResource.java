@@ -32,36 +32,37 @@ public class PassageLogResource {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<PassageLogDto> findAll() {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findAll()));
+        return endpoint.findAll();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<PassageLogDto>> findOne(@PathVariable Long id) {
-        return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
+        return endpoint.findOne(id).map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "/general-logs/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<PassageLogDto> findByGeneralLogId(@PathVariable Long id) {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findByGeneralLogId(id)));
+        return endpoint.findByGeneralLogId(id);
     }
 
     @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<PassageLogDto> findAllRevisions(@PathVariable Long id) {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));
+        return endpoint.findAllRevisions(id);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<PassageLogDto> save(@Validated(Group.Create.class) @RequestBody PassageLogDto dto) {
-        return Mono.fromCallable(() -> endpoint.save(dto));
+        return endpoint.save(dto);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<PassageLogDto> update(@Validated(Group.Update.class) @RequestBody PassageLogDto dto) {
-        return Mono.fromCallable(() -> endpoint.save(dto));
+        return endpoint.save(dto);
     }
 
     @DeleteMapping(value = "/{id}")
     public Mono<Void> delete(@PathVariable Long id) {
-        return Mono.fromRunnable(() -> endpoint.delete(id));
+        return endpoint.delete(id);
     }
 }

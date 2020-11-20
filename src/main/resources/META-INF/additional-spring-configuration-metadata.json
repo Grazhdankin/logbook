@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "security.password.encoder.secret",
+      "type": "java.lang.String",
+      "description": "Password encoder secret."
+    },
+    {
+      "name": "security.password.encoder.iteration",
+      "type": "java.lang.String",
+      "description": "Count of the encoding iteration."
+    },
+    {
+      "name": "security.password.encoder.keylength",
+      "type": "java.lang.String",
+      "description": "Encoding key length."
+    },
+    {
+      "name": "security.jjwt.secret",
+      "type": "java.lang.String",
+      "description": "JJWT secret."
+    },
+    {
+      "name": "security.jjwt.expiration",
+      "type": "java.lang.String",
+      "description": "JJWT expiration."
+    }
+  ]
+}

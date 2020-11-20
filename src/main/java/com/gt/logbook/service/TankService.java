@@ -1,19 +1,18 @@
 package com.gt.logbook.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.domain.entity.Tank;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface TankService {
 
-    List<Tank> findAll();
+    Flux<Tank> findAll();
 
-    Optional<Tank> findOne(Long id);
+    Mono<Tank> findOne(Long id);
 
-    List<Tank> findAllRevisions(Long id);
+    Flux<Tank> findAllRevisions(Long id);
 
-    Tank save(Tank entity);
+    Mono<Tank> save(Tank entity);
 
-    void delete(Long id);
+    Mono<Void> delete(Long id);
 }

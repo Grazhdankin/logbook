@@ -1,7 +1,5 @@
 package com.gt.logbook.service.impl;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.history.Revision;
@@ -10,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.domain.entity.CommonLog;
 import com.gt.logbook.domain.repository.CommonLogRepository;
 import com.gt.logbook.service.CommonLogService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class DefaultCommonLogService implements CommonLogService {
@@ -22,37 +22,37 @@ public class DefaultCommonLogService implements CommonLogService {
 
     @Transactional
     @Override
-    public List<CommonLog> findAll() {
+    public Flux<CommonLog> findAll() {
         return repository.findAll();
     }
 
     @Transactional
     @Override
-    public Optional<CommonLog> findOne(Long id) {
+    public Mono<CommonLog> findOne(Long id) {
         return repository.findById(id);
     }
 
     @Transactional
     @Override
-    public List<CommonLog> findByGeneralLogId(Long id) {
+    public Flux<CommonLog> findByGeneralLogId(Long id) {
         return repository.findByGeneralLog_Id(id);
     }
 
     @Transactional
     @Override
-    public List<CommonLog> findAllRevisions(Long id) {
-        return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());
+    public Flux<CommonLog> findAllRevisions(Long id) {
+        return Flux.defer(() -> Flux.fromIterable(repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList())));
     }
 
     @Transactional
     @Override
-    public CommonLog save(CommonLog entity) {
-        return repository.saveAndFlush(entity);
+    public Mono<CommonLog> save(CommonLog entity) {
+        return repository.save(entity);
     }
 
     @Transactional
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public Mono<Void> delete(Long id) {
+        return repository.deleteById(id);
     }
 }

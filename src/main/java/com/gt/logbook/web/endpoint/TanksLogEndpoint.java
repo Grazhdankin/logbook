@@ -1,21 +1,20 @@
 package com.gt.logbook.web.endpoint;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.web.dto.TanksLogDto;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface TanksLogEndpoint {
 
-    List<TanksLogDto> findAll();
+    Flux<TanksLogDto> findAll();
 
-    Optional<TanksLogDto> findOne(Long id);
+    Mono<TanksLogDto> findOne(Long id);
 
-    List<TanksLogDto> findByGeneralLogId(Long id);
+    Flux<TanksLogDto> findByGeneralLogId(Long id);
 
-    List<TanksLogDto> findAllRevisions(Long id);
+    Flux<TanksLogDto> findAllRevisions(Long id);
 
-    TanksLogDto save(TanksLogDto dto);
+    Mono<TanksLogDto> save(TanksLogDto dto);
 
-    void delete(Long id);
+    Mono<Void> delete(Long id);
 }

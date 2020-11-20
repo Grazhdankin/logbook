@@ -1,21 +1,20 @@
 package com.gt.logbook.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.domain.entity.WeatherLog;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface WeatherLogService {
 
-    List<WeatherLog> findAll();
+    Flux<WeatherLog> findAll();
 
-    Optional<WeatherLog> findOne(Long id);
+    Mono<WeatherLog> findOne(Long id);
 
-    List<WeatherLog> findByGeneralLogId(Long id);
+    Flux<WeatherLog> findByGeneralLogId(Long id);
 
-    List<WeatherLog> findAllRevisions(Long id);
+    Flux<WeatherLog> findAllRevisions(Long id);
 
-    WeatherLog save(WeatherLog entity);
+    Mono<WeatherLog> save(WeatherLog entity);
 
-    void delete(Long id);
+    Mono<Void> delete(Long id);
 }

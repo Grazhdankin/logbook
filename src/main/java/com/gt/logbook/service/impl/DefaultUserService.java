@@ -1,7 +1,5 @@
 package com.gt.logbook.service.impl;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.history.Revision;
@@ -10,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gt.logbook.domain.entity.User;
 import com.gt.logbook.domain.repository.UserRepository;
 import com.gt.logbook.service.UserService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class DefaultUserService implements UserService {
@@ -22,31 +22,37 @@ public class DefaultUserService implements UserService {
 
     @Transactional
     @Override
-    public List<User> findAll() {
+    public Flux<User> findAll() {
         return repository.findAll();
     }
 
     @Transactional
     @Override
-    public Optional<User> findOne(Long id) {
+    public Mono<User> findOne(Long id) {
         return repository.findById(id);
     }
 
     @Transactional
     @Override
-    public List<User> findAllRevisions(Long id) {
-        return repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList());
+    public Mono<User> findByUsername(String username) {
+        return repository.findByUsername(username);
     }
 
     @Transactional
     @Override
-    public User save(User entity) {
-        return repository.saveAndFlush(entity);
+    public Flux<User> findAllRevisions(Long id) {
+        return Flux.defer(() -> Flux.fromIterable(repository.findRevisions(id).reverse().stream().map(Revision::getEntity).collect(Collectors.toList())));
     }
 
     @Transactional
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public Mono<User> save(User entity) {
+        return repository.save(entity);
+    }
+
+    @Transactional
+    @Override
+    public Mono<Void> delete(Long id) {
+        return repository.deleteById(id);
     }
 }

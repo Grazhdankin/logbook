@@ -1,19 +1,20 @@
 package com.gt.logbook.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.domain.entity.User;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface UserService {
 
-    List<User> findAll();
+    Flux<User> findAll();
 
-    Optional<User> findOne(Long id);
+    Mono<User> findOne(Long id);
 
-    List<User> findAllRevisions(Long id);
+    Mono<User> findByUsername(String username);
 
-    User save(User entity);
+    Flux<User> findAllRevisions(Long id);
 
-    void delete(Long id);
+    Mono<User> save(User entity);
+
+    Mono<Void> delete(Long id);
 }

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.gt.logbook.security.Role;
 import lombok.Builder;
 import lombok.Value;
 
@@ -36,13 +37,18 @@ public class UserDto {
     @NotBlank(message = "email: must not be blank")
     @Size(max = 255, message = "email: size must be lower or equal to 255 characters")
     @Email
-    String email;
+    String username;
 
     String firstName;
 
     String lastName;
 
     String password;
+
+    @NotNull(message = "role: must not be null")
+    Role role;
+
+    Boolean enabled;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class UserDtoBuilder {

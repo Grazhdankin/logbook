@@ -1,19 +1,18 @@
 package com.gt.logbook.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.gt.logbook.domain.entity.GeneralLog;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface GeneralLogService {
 
-    List<GeneralLog> findAll();
+    Flux<GeneralLog> findAll();
 
-    Optional<GeneralLog> findOne(Long id);
+    Mono<GeneralLog> findOne(Long id);
 
-    List<GeneralLog> findAllRevisions(Long id);
+    Flux<GeneralLog> findAllRevisions(Long id);
 
-    GeneralLog save(GeneralLog entity);
+    Mono<GeneralLog> save(GeneralLog entity);
 
-    void delete(Long id);
+    Mono<Void> delete(Long id);
 }
