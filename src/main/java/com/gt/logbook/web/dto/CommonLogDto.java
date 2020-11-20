@@ -9,7 +9,6 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
@@ -17,7 +16,6 @@ import lombok.Value;
 
 @Value
 @Builder(toBuilder = true)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CommonLogDto.CommonLogDtoBuilder.class)
 public class CommonLogDto {
 

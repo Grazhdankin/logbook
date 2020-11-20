@@ -9,6 +9,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Profile("!test")
@@ -24,12 +25,7 @@ public class PersistenceConfiguration {
 
         @Bean
         public AuditorAware<String> auditorProvider() {
-
-        /*
-          if you are using spring security, you can get the currently logged username with following code segment.
-          SecurityContextHolder.getContext().getAuthentication().getName()
-         */
-            return () -> Optional.of("system");
+            return () -> Optional.of(SecurityContextHolder.getContext().getAuthentication().getName());
         }
     }
 }

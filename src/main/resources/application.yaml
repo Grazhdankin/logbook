@@ -1,5 +1,11 @@
 server:
   port: 8085
+  servlet:
+    session:
+      timeout: 10m
+      cookie:
+        http-only: true
+        secure: false
 
 spring:
   main:
@@ -8,7 +14,7 @@ spring:
   application:
     name: logbook
   jackson:
-    default-property-inclusion: non_null
+    default-property-inclusion: NON_EMPTY
     serialization:
       INDENT_OUTPUT: true
     deserialization:
@@ -38,6 +44,7 @@ spring:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
           auto: update
+    open-in-view: false
 
 management:
   health:

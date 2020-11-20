@@ -1,21 +1,67 @@
 CREATE TABLE users
 (
-    id         BIGSERIAL    NOT NULL,
-    version    BIGINT       NOT NULL DEFAULT (1),
+    id         BIGSERIAL   NOT NULL,
+    version    BIGINT      NOT NULL DEFAULT (1),
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    created_by BIGINT,
-    updated_by BIGINT,
-    email      VARCHAR(255) NOT NULL,
-    first_name VARCHAR(255),
-    last_name  VARCHAR(255),
+    created_by VARCHAR(32),
+    updated_by VARCHAR(32),
+    user_name  VARCHAR(32) NOT NULL,
+    full_name  VARCHAR(64),
     password   VARCHAR(255),
+    enabled    BOOLEAN     NOT NULL DEFAULT TRUE,
 
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
-CREATE UNIQUE INDEX idx_users ON users (email);
+CREATE UNIQUE INDEX idx_users ON users (user_name);
 ALTER TABLE users
     ADD CONSTRAINT uq_users UNIQUE USING INDEX idx_users;
+
+CREATE TABLE roles
+(
+    id   SMALLSERIAL NOT NULL,
+    name VARCHAR(64) NOT NULL,
+
+    CONSTRAINT pk_roles PRIMARY KEY (id)
+);
+CREATE UNIQUE INDEX idx_roles ON roles (name);
+ALTER TABLE roles
+    ADD CONSTRAINT uq_roles UNIQUE USING INDEX idx_roles;
+
+CREATE TABLE users_roles
+(
+    user_id SMALLINT NOT NULL,
+    role_id SMALLINT NOT NULL,
+
+    CONSTRAINT pk_users_roles PRIMARY KEY (user_id, role_id),
+    CONSTRAINT fk_users_logs_user_id FOREIGN KEY (user_id) REFERENCES users (id),
+    CONSTRAINT fk_users_logs_role_id FOREIGN KEY (role_id) REFERENCES roles (id)
+);
+
+INSERT INTO roles (name)
+VALUES ('ROLE_USER');
+INSERT INTO roles (name)
+VALUES ('ROLE_CREATOR');
+INSERT INTO roles (name)
+VALUES ('ROLE_EDITOR');
+INSERT INTO roles (name)
+VALUES ('ROLE_ADMIN');
+
+INSERT INTO users (user_name, password)
+VALUES ('admin', '$2a$10$dWzR6FNae1QpiuDoexeNv.AqTtDd4183jLg77ugAS90GqRG/TVmN6');
+INSERT INTO users (user_name, password)
+VALUES ('user', '$2a$10$AdxzaR./gA9tlivH/vY4T.7j5B7wcAy1IV1ykRqYZR2qbhTKDiWPq');
+
+INSERT INTO users_roles
+VALUES (1, 1);
+INSERT INTO users_roles
+VALUES (1, 2);
+INSERT INTO users_roles
+VALUES (1, 3);
+INSERT INTO users_roles
+VALUES (1, 4);
+INSERT INTO users_roles
+VALUES (2, 1);
 
 CREATE TABLE general_logs
 (
@@ -23,8 +69,8 @@ CREATE TABLE general_logs
     version                 BIGINT    NOT NULL DEFAULT (1),
     created_at              TIMESTAMP,
     updated_at              TIMESTAMP,
-    created_by              BIGINT,
-    updated_by              BIGINT,
+    created_by              VARCHAR(32),
+    updated_by              VARCHAR(32),
     date                    DATE      NOT NULL,
     lights_on_time          TIME,
     lights_off_time         TIME,
@@ -48,8 +94,8 @@ CREATE TABLE weather_logs
     version                     BIGINT    NOT NULL DEFAULT (1),
     created_at                  TIMESTAMP,
     updated_at                  TIMESTAMP,
-    created_by                  BIGINT,
-    updated_by                  BIGINT,
+    created_by                  VARCHAR(32),
+    updated_by                  VARCHAR(32),
     general_log_id              BIGINT    NOT NULL,
     time                        TIME      NOT NULL,
     wind_direction_and_velocity VARCHAR(16),
@@ -75,8 +121,8 @@ CREATE TABLE passage_logs
     version                 BIGINT    NOT NULL DEFAULT (1),
     created_at              TIMESTAMP,
     updated_at              TIMESTAMP,
-    created_by              BIGINT,
-    updated_by              BIGINT,
+    created_by              VARCHAR(32),
+    updated_by              VARCHAR(32),
     general_log_id          BIGINT    NOT NULL,
     time                    TIME      NOT NULL,
     passage                 NUMERIC   NOT NULL,
@@ -99,8 +145,8 @@ CREATE TABLE tanks
     version     BIGINT      NOT NULL DEFAULT (1),
     created_at  TIMESTAMP,
     updated_at  TIMESTAMP,
-    created_by  BIGINT,
-    updated_by  BIGINT,
+    created_by  VARCHAR(32),
+    updated_by  VARCHAR(32),
     name        VARCHAR(32) NOT NULL,
     description VARCHAR(128),
 
@@ -117,8 +163,8 @@ CREATE TABLE tanks_logs
     version        BIGINT    NOT NULL DEFAULT (1),
     created_at     TIMESTAMP,
     updated_at     TIMESTAMP,
-    created_by     BIGINT,
-    updated_by     BIGINT,
+    created_by     VARCHAR(32),
+    updated_by     VARCHAR(32),
     general_log_id BIGINT    NOT NULL,
     time           TIME      NOT NULL,
     tank_id        BIGINT    NOT NULL,
@@ -140,8 +186,8 @@ CREATE TABLE common_logs
     version        BIGINT       NOT NULL DEFAULT (1),
     created_at     TIMESTAMP,
     updated_at     TIMESTAMP,
-    created_by     BIGINT,
-    updated_by     BIGINT,
+    created_by     VARCHAR(32),
+    updated_by     VARCHAR(32),
     general_log_id BIGINT       NOT NULL,
     time           TIME         NOT NULL,
     location       VARCHAR(64),

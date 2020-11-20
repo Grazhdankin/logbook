@@ -1,5 +1,7 @@
 package com.gt.logbook.domain.entity;
 
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 
@@ -20,7 +22,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Audited
+@Audited(targetAuditMode = NOT_AUDITED)
 @Table(name = "passage_logs")
 public class PassageLog extends BaseEntity implements Serializable {
 

@@ -3,6 +3,8 @@ package com.gt.logbook.web.resource;
 import static com.gt.logbook.web.resource.Paths.BASE_API_PATH;
 import static com.gt.logbook.web.resource.Paths.USERS_API_PATH;
 
+import java.util.List;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gt.logbook.web.dto.Group;
 import com.gt.logbook.web.dto.UserDto;
 import com.gt.logbook.web.endpoint.UserEndpoint;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping(path = BASE_API_PATH + USERS_API_PATH)
@@ -31,32 +31,33 @@ public class UserResource {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<UserDto> findAll() {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findAll()));
+    public List<UserDto> findAll() {
+        return endpoint.findAll();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<UserDto>> findOne(@PathVariable Long id) {
-        return Mono.fromCallable(() -> endpoint.findOne(id)).map(ResponseEntity::of);
+    public ResponseEntity<UserDto> findOne(@PathVariable Long id) {
+        return endpoint.findOne(id).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<UserDto> findAllRevisions(@PathVariable Long id) {
-        return Flux.defer(() -> Flux.fromIterable(endpoint.findAllRevisions(id)));
+    public List<UserDto> findAllRevisions(@PathVariable Long id) {
+        return endpoint.findAllRevisions(id);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<UserDto> save(@Validated(Group.Create.class) @RequestBody UserDto dto) {
-        return Mono.fromCallable(() -> endpoint.save(dto));
+    public UserDto save(@Validated(Group.Create.class) @RequestBody UserDto dto) {
+        return endpoint.save(dto);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<UserDto> update(@Validated(Group.Update.class) @RequestBody UserDto dto) {
-        return Mono.fromCallable(() -> endpoint.save(dto));
+    public UserDto update(@Validated(Group.Update.class) @RequestBody UserDto dto) {
+        return endpoint.save(dto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public Mono<Void> delete(@PathVariable Long id) {
-        return Mono.fromRunnable(() -> endpoint.delete(id));
+    public void delete(@PathVariable Long id) {
+        endpoint.delete(id);
     }
 }
