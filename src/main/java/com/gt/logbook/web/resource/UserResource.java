@@ -41,11 +41,6 @@ public class UserResource {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping(path = "/revisions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDto> findAllRevisions(@PathVariable Long id) {
-        return endpoint.findAllRevisions(id);
-    }
-
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto save(@Validated(Group.Create.class) @RequestBody UserDto dto) {
         return endpoint.save(dto);

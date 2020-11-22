@@ -11,8 +11,6 @@ public interface UserEndpoint {
 
     Optional<UserDto> findOne(Long id);
 
-    List<UserDto> findAllRevisions(Long id);
-
     UserDto save(UserDto dto);
 
     void delete(Long id);
